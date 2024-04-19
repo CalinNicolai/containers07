@@ -1,26 +1,20 @@
 Лабораторная рвбота №8 Непрерывная интеграция с помощью Github Actions
 ======================================================================
 
-[](https://github.com/Tasha290929/containers07/blob/main/readme.md#%D0%BB%D0%B0%D0%B1%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F-%D1%80%D0%B2%D0%B1%D0%BE%D1%82%D0%B0-8-%D0%BD%D0%B5%D0%BF%D1%80%D0%B5%D1%80%D1%8B%D0%B2%D0%BD%D0%B0%D1%8F-%D0%B8%D0%BD%D1%82%D0%B5%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-github-actions)
+[](https://github.com/CalinNicolai/containers07/actions)
 
 Цель работы
 -----------
-
-[](https://github.com/Tasha290929/containers07/blob/main/readme.md#%D1%86%D0%B5%D0%BB%D1%8C-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B)
 
 В рамках данной работы студенты научатся настраивать непрерывную интеграцию с помощью Github Actions.
 
 Задание
 -------
 
-[](https://github.com/Tasha290929/containers07/blob/main/readme.md#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5)
-
 Создать Web приложение, написать тесты для него и настроить непрерывную интеграцию с помощью Github Actions на базе
 контейнеров.
 
 ### Выполнение
-
-[](https://github.com/Tasha290929/containers07/blob/main/readme.md#%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5)
 
 Создайте репозиторий containers07 и скопируйте его себе на компьютер.
 
@@ -28,8 +22,6 @@
 PHP.
 
 ### Создание Web приложения
-
-[](https://github.com/Tasha290929/containers07/blob/main/readme.md#%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-web-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F)
 
 Создайте в директории ./site Web приложение на базе PHP со следующей структурой:
 
@@ -89,8 +81,6 @@ echo $page->Render($data);
 
 ### Подготовка SQL файла для базы данных
 
-[](https://github.com/Tasha290929/containers07/blob/main/readme.md#%D0%BF%D0%BE%D0%B4%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BA%D0%B0-sql-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0-%D0%B4%D0%BB%D1%8F-%D0%B1%D0%B0%D0%B7%D1%8B-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85)
-
 Создайте в корневом каталоге директорию ./sql. В созданной директории создайте файл schema.sql со следующим содержимым:
 
 ```sql
@@ -110,8 +100,6 @@ VALUES ('Page 3', 'Content 3');
 ```
 
 ### Создание тестов
-
-[](https://github.com/Tasha290929/containers07/blob/main/readme.md#%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D1%82%D0%B5%D1%81%D1%82%D0%BE%D0%B2)
 
 Создайте в корневом каталоге директорию ./tests. В созданном каталоге создайте файл testframework.php со следующим
 содержимым:
@@ -302,6 +290,41 @@ jobs:
 
 ### Запуск и тестирование
 
-[](https://github.com/CalinNicolai/containers07/actions)
-
 ![test.png](test.png)
+
+### Ответы на вопросы
+
+1. Что такое непрерывная интеграция?
+
+       Это практика автоматического слияния изменений кода в общий репозиторий, последующей сборки и тестирования для обнаружения ошибок на ранних этапах разработки
+
+2. Для чего нужны юнит-тесты? Как часто их нужно запускать?
+
+       Юнит-тесты необходимы для проверки отдельных компонентов программы на корректность работы и выявления ошибок на ранних стадиях; их следует запускать как можно чаще, в идеале - после каждого изменения кода.    
+
+3. Что нужно изменить в файле`.github/workflows/main.yml`для того, чтобы тесты запускались при каждом создании запроса
+   на слияние (Pull Request)?
+     ```yaml
+     on:
+        pull_request:
+           branches:
+              - main
+     
+     ```
+4. Что нужно добавить в файл`.github/workflows/main.yml`для того, чтобы удалять созданные образы после выполнения
+   тестов?
+     ```yaml
+     jobs:
+       build:
+         runs-on: ubuntu-latest
+         steps:
+           - name: Checkout code
+             uses: actions/checkout@v2
+           - name: Run tests
+             run: |
+               npm install
+               npm test
+           - name: Cleanup
+             run: |
+               docker image prune --all --force
+     ```
