@@ -20,7 +20,7 @@ jobs:
       - name: Up the container
         run: docker start container
       - name: Run tests
-        run: docker exec container php /var/www/html/tests/tests.php
+        run: docker exec container php /var/www/html/tests/test.php
       - name: Stop the container
         run: docker stop container
       - name: Remove the container
