@@ -52,7 +52,7 @@ function testDbCreate()
     }
 
     $data = array(
-        'title' => 'Test Title',
+        'name' => 'Test name',
         'content' => 'Test Content'
     );
     $id = $database->Create('page', $data);
